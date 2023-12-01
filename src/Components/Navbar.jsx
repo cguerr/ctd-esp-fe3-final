@@ -1,16 +1,38 @@
-import React from 'react'
-
-//Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
+import React, { useContext, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { useUserStates } from '../Components/utils/global.context';
+import '../index.css'
 
 const Navbar = () => {
 
+  const { state, dispatch } = useUserStates(); 
+  
+  useEffect(() => {
+  const htmlElement = document.documentElement;
+
+  htmlElement.setAttribute(
+    'data-bs-theme',
+    state.theme === 'dark' ? 'dark' : 'light'
+  );
+}, [state.theme]);
+ 
+  const handleThemeChange = () => {
+    
+    dispatch({ type: 'TOGGLE_THEME' });
+  };
+
   return (
+    <main className={`../index.css ${state.theme}`}>
     <nav>
-      {/* Aqui deberan agregar los liks correspondientes a las rutas definidas */}
-      {/* Deberan implementar ademas la logica para cambiar de Theme con el button */}
-      <button>Change theme</button>
+      {<Link to='/home'><h4>Home</h4></Link>}
+      {<Link to='/contacts'><h4>Contact</h4></Link>}
+      {<Link to='/favs'><h4>Favs</h4></Link>}
+
+      <button className='moonButton' onClick={handleThemeChange}>🌙</button>
+    
     </nav>
-  )
+    </main>
+    );
 }
 
-export default Navbar
+export default Navbar;
